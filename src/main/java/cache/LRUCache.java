@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentMap;
 
 public class LRUCache {
     private Deque<String> queue = new LinkedList<>();
-    private ConcurrentMap<String, Cache> map = new ConcurrentHashMap<>();
+    private Map<String, Cache> map = new HashMap<>();
     private static final int CACHE_CAPACITY = 3;
-    public Response getElementFromCache(String key)
+    public synchronized Response getElementFromCache(String key)
     {
         if(map.containsKey(key))
         {
@@ -21,7 +21,7 @@ public class LRUCache {
         }
         return null;
     }
-    public void putElementInCache(String key, Response value)
+    public synchronized void putElementInCache(String key, Response value)
     {
         if(map.containsKey(key))
         {
