@@ -3,19 +3,21 @@ package cache;
 import liteweb.http.Response;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class LRUCache {
-    static Deque<String> q = new LinkedList<>();
-    static Map<String, Cache> map = new HashMap<>();
-    int CACHE_CAPACITY = 3;
+    private Deque<String> queue = new LinkedList<>();
+    private ConcurrentMap<String, Cache> map = new ConcurrentHashMap<>();
+    private static final int CACHE_CAPACITY = 3;
     public Response getElementFromCache(String key)
     {
         if(map.containsKey(key))
         {
             Cache current = map.get(key);
-            q.remove(current.key);
-            q.addFirst(current.key);
-            return current.value;
+            queue.remove(current.getKey());
+            queue.addFirst(current.getKey());
+            return current.getValue();
         }
         return null;
     }
@@ -24,18 +26,18 @@ public class LRUCache {
         if(map.containsKey(key))
         {
             Cache curr = map.get(key);
-            q.remove(curr.key);
+            queue.remove(curr.getKey());
         }
         else
         {
-            if(q.size() == CACHE_CAPACITY)
+            if(queue.size() == CACHE_CAPACITY)
             {
-                String temp = q.removeLast();
+                String temp = queue.removeLast();
                 map.remove(temp);
             }
         }
         Cache newItem = new Cache(key, value);
-        q.addFirst(newItem.key);
+        queue.addFirst(newItem.getKey());
         map.put(key, newItem);
     }
 //    public static void main(String[] args)
