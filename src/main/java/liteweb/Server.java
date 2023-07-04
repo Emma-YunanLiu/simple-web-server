@@ -67,6 +67,8 @@ public class Server {
             res.write(clientSocket.getOutputStream());
         } catch (IOException e) {
             log.error("IO Error", e);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException", e);
         }
 
     }
