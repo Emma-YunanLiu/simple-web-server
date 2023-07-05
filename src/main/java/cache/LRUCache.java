@@ -14,7 +14,7 @@ public class LRUCache {
     private final Condition notFull = lock.newCondition();
     private final Condition notEmpty  = lock.newCondition();
     private static final int CACHE_CAPACITY = 3;
-    public synchronized Response getElementFromCache(String key) throws InterruptedException {
+    public Response getElementFromCache(String key) throws InterruptedException {
         Response response = null;
         lock.lock();
         try {
@@ -38,7 +38,7 @@ public class LRUCache {
 
 
     }
-    public synchronized void putElementInCache(String key, Response value) throws InterruptedException {
+    public void putElementInCache(String key, Response value) throws InterruptedException {
         lock.lock();
         try {
             if(map.containsKey(key)) {
